@@ -60,6 +60,26 @@
 /// \brief okvis Main namespace of this package.
 namespace okvis {
 
+
+
+
+class timeLog {
+public:
+    timeLog(const double &t0, const double &t1, const double &t2) {
+        time_stamp = t0;
+        time_cost_1 = t1;
+        time_cost_2 = t2;
+    };
+
+    double time_stamp;
+    double time_cost_1;
+    double time_cost_2;
+};
+
+
+
+
+
 /**
  * @brief An abstract base class for interfaces between Front- and Backend.
  */

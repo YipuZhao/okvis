@@ -41,6 +41,9 @@
 #ifndef INCLUDE_OKVIS_THREADEDKFVIO_HPP_
 #define INCLUDE_OKVIS_THREADEDKFVIO_HPP_
 
+#include <iostream>
+#include <fstream>
+
 #include <thread>
 #include <mutex>
 #include <condition_variable>
@@ -113,6 +116,33 @@ class ThreadedKFVio : public VioInterface {
 
   /// \brief Destructor. This calls Shutdown() for all threadsafe queues and joins all threads.
   virtual ~ThreadedKFVio();
+
+
+ std::vector<timeLog> logTimeCost;
+
+
+ //
+ void saveTimeLog(const std::string filename) {
+
+     std::cout << std::endl << "Saving " << logTimeCost.size() << " records to time log file " << filename << " ..." << std::endl;
+
+     std::ofstream fFrameTimeLog;
+     fFrameTimeLog.open(filename.c_str());
+     fFrameTimeLog << std::fixed;
+     fFrameTimeLog << "#frame_time_stamp time_pre_proc time_post_proc" << std::endl;
+     for(size_t i=0; i<logTimeCost.size(); i++)
+     {
+         fFrameTimeLog << std::setprecision(6)
+                       << logTimeCost[i].time_stamp << " "
+                       << logTimeCost[i].time_cost_1 << " "
+                       << logTimeCost[i].time_cost_2 << std::endl;
+     }
+     fFrameTimeLog.close();
+
+     std::cout << "Finished saving log! " << std::endl;
+ }
+
+
 
   /// \name Add measurements to the algorithm
   /// \{
